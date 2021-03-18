@@ -1,7 +1,7 @@
 const inquirer=require('inquirer');
 require('colors')
 
-const questions=[
+const preguntas=[
     {
         type:'list',
         name:'opc',
@@ -51,7 +51,7 @@ const mostrarMenu=async()=>{
     console.log('===========================\n'.green);
 
     
-    const {opc}= await inquirer.prompt(questions)
+    const {opc}= await inquirer.prompt(preguntas)
     return opc;
 }
 
@@ -89,8 +89,85 @@ const leerConsola=async(message='')=>{
     return entrada;
 }
 
+
+const listadoTareasBorrar=async(tareas=[])=>{
+
+    const choices=tareas.map((tarea,i)=>{
+
+        const idx=`${i+1}.`.green
+
+        return{
+           value:tarea.id,
+           name:`${idx} ${tarea.desc}`
+        }
+    })
+
+    choices.unshift({
+        value:'0',
+        name:`${'0.'.green} Cancelar`
+    })
+
+    const question=[
+        {
+            type:'list',
+            name:'id',
+            message:'selecciona una tarea',
+            choices
+        }
+    ]
+
+
+    const {id}=await inquirer.prompt(question)
+    return id;
+
+}
+
+const confirmar=async(message)=>{
+
+    const question=[
+        {
+            type:'confirm',
+            name:'ok',
+            message
+        }
+    ]
+
+    const {ok}=await inquirer.prompt(question);
+    return ok;
+}
+
+const mostrarListadoCheckList=async(tareas=[])=>{
+
+    const choices=tareas.map((tarea,i)=>{
+
+        const idx=`${i+1}.`.green
+
+        return{
+           value:tarea.id,
+           name:`${idx} ${tarea.desc}`,
+           checked:(tarea.completadoEn) ? true : false
+        }
+    })
+    
+    const question=[
+        {
+            type:'checkbox',
+            name:'ids',
+            message:'selecciona una tarea',
+            choices
+        }
+    ]
+    const {ids}=await inquirer.prompt(question)
+    return ids;
+
+}
+
+
 module.exports={
     mostrarMenu,
     pausa,
-    leerConsola
+    leerConsola,
+    listadoTareasBorrar,
+    confirmar,
+    mostrarListadoCheckList
 }

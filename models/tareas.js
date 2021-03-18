@@ -63,7 +63,7 @@ class Tareas{
             if(completadas){
                 if(t.completadoEn!==null){
                     contador++;
-                    cadena+=`${contador.toString().green} ${t.desc} ${t.completadoEn}\n`;
+                    cadena+=`${contador.toString().green} ${t.desc} ${t.completadoEn.green}\n`;
                 }
             }else{
                 if(t.completadoEn===null){
@@ -74,6 +74,28 @@ class Tareas{
 
         })
         return cadena;
+    }
+
+    borrarTarea(id=''){
+        if(this._listado[id]){
+            delete this._listado[id];
+        }
+    }
+    toggleCompletadas(ids=[]){
+        
+        ids.forEach(id=>{
+            const tarea=this._listado[id];
+            if(!tarea.completadoEn){
+                tarea.completadoEn=new Date().toISOString();
+            }
+        })
+
+        this.listadoArr.forEach(tarea=>{
+            if(!ids.includes(tarea.id)){
+                const tarea=this._listado[id];
+                tarea.completadoEn=null;
+            }
+        })
     }
 
 
